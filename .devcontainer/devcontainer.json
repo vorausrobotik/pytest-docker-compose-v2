@@ -31,12 +31,12 @@
           "python.testing.unittestEnabled": false,
           "python.testing.nosetestsEnabled": false,
           "python.testing.pytestEnabled": true,
-          "ruff.organizeImports": false,
+          "ruff.organizeImports": true,
           "[python]": {
             "editor.codeActionsOnSave": {
-              "source.organizeImports": true
+              "source.organizeImports": "always"
             },
-            "editor.defaultFormatter": "ms-python.black-formatter",
+            "editor.defaultFormatter": "charliermarsh.ruff",
             "editor.formatOnSave": true
           },
           "[dockerfile]": {
