@@ -67,8 +67,8 @@ ENV PATH "/home/${DEV_USER}/.local/bin:${PATH}"
 # install dependencies into virtualenv
 WORKDIR ${BUILD_DIR}
 RUN python3 -m venv ${VIRTUAL_ENV}
-COPY pyproject.toml pdm.lock ${BUILD_DIR}
-RUN pdm sync --dev --no-self
+COPY pyproject.toml pdm.lock README.rst ${BUILD_DIR}
+RUN pdm sync --dev
 
 WORKDIR /workspace
 
