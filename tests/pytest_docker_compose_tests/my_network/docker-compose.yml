@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   my_api_service:
     build: ./a_buildable_container
@@ -12,7 +10,7 @@ services:
   my_db:
     image: postgres:11.2-alpine
     ports:
-      - "5432:5432"
+      - "5434:5432"
 
   my_short_lived_service:
     build: ./a_buildable_container
