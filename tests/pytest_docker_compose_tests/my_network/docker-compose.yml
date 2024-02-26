@@ -1,8 +1,14 @@
+networks:
+  pytest-docker-compose-network:
+    external: true
+
 services:
   my_api_service:
     build: ./a_buildable_container
     ports:
       - "5000:5000"
+    networks:
+      - pytest-docker-compose-network
     depends_on:
       - my_db
     restart: on-failure
@@ -10,9 +16,13 @@ services:
   my_db:
     image: postgres:11.2-alpine
     ports:
-      - "5434:5432"
+      - "5432:5432"
+    networks:
+      - pytest-docker-compose-network
 
   my_short_lived_service:
     build: ./a_buildable_container
     entrypoint: /bin/echo
     command: "Echoing"
+    networks:
+      - pytest-docker-compose-network

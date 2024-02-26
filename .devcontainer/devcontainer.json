@@ -4,6 +4,10 @@
       "dockerfile": "Dockerfile",
       "context": "${localWorkspaceFolder}"
     },
+    "runArgs": [
+      "--network=pytest-docker-compose-network"
+    ],
+    "initializeCommand": ".devcontainer/docker-init.sh",
     "workspaceFolder": "/workspace",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     "mounts": [
@@ -27,7 +31,7 @@
         "settings": {
           "#terminal.integrated.defaultProfile.linux#": "/bin/bash",
           "python.defaultInterpreterPath": "/venv/bin/python",
-          "python.terminal.activateEnvironment": false,
+          "python.terminal.activateEnvironment": true,
           "python.testing.unittestEnabled": false,
           "python.testing.nosetestsEnabled": false,
           "python.testing.pytestEnabled": true,
