@@ -1,5 +1,5 @@
 [project]
-name = "pytest-docker-compose-v2"
+name = "pytest-docker-compose"
 version = "0.1.0"
 description = "Manages Docker containers during your integration tests"
 authors = [
@@ -8,10 +8,10 @@ authors = [
     {name = "Thomas Meckel"},
 ]
 dependencies = [
-    "pytest>=7.2.2",
+    "pytest>=7.2.2,<8",
     # starting with this version since that was in the original
     # PR by Thomas Meckel: https://github.com/pytest-docker-compose/pytest-docker-compose/pull/98
-    "python-on-whales==0.52.0"
+    "python-on-whales>=0.69.0,<1"
 ]
 requires-python = ">=3.9"
 readme = "README.rst"
@@ -35,6 +35,9 @@ classifiers = [
   "Operating System :: OS Independent",
 ]
 
+[project.entry-points.pytest11]
+docker_compose = "pytest_docker_compose.plugin:plugin"
+
 [project.urls]
 repository="https://github.com/radusuciu/pytest-docker-compose-v2"
 
@@ -43,12 +46,6 @@ requires = ["pdm-pep517>=1.0"]
 build-backend = "pdm.pep517.api"
 
 [tool.pdm]
-[tool.pdm.build]
-includes = [
-    "LICENCE",
-]
-package-dir = "src"
-
 [tool.pdm.dev-dependencies]
 dev = [
     "ruff>=0.0.259",
