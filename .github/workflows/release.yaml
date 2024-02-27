@@ -9,23 +9,31 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     environment: pypi-publish
-
+    env:
+        VIRTUAL_ENV: .venv
+    permissions:
+      # for trusted publishing
+      id-token: write
     steps:
     - name: Check out repository
       uses: actions/checkout@v4
-
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
     - name: Set up PDM
       uses: pdm-project/setup-pdm@v4
       with:
-        python-version: 3.11
+        python-version: '3.11'
         cache: true
-
     - name: Install dependencies
-      run: pdm install -v --dev
-
+      run: |
+        python -m venv ${{ env.VIRTUAL_ENV }}
+        pdm sync --verbose --dev
     - name: Run tests
-      run: python -m pytest
-
+      run: |
+        source ${{ env.VIRTUAL_ENV }}/bin/activate
+        python -m pytest
     - name: Create GitHub release
       uses: softprops/action-gh-release@v1
       with:
@@ -33,10 +41,7 @@ jobs:
         tag_name: ${{ github.ref }}
         draft: false
         prerelease: false
-
     - name: Build and publish to PyPI
-      env:
-        PDM_PUBLISH_USERNAME: ${{ secrets.PDM_PUBLISH_USERNAME }}
-        PDM_PUBLISH_PASSWORD: ${{ secrets.PDM_PUBLISH_PASSWORD }}
       run: |
+        source ${{ env.VIRTUAL_ENV }}/bin/activate
         pdm publish
