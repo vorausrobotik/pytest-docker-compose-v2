@@ -3,5 +3,3 @@ services:
     build: ./a_buildable_container
     entrypoint: /bin/echo
     command: "Echoing"
-    networks:
-      - pytest-docker-compose-network

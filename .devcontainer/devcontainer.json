@@ -4,10 +4,17 @@
       "dockerfile": "Dockerfile",
       "context": "${localWorkspaceFolder}"
     },
+    // needed because of the interaction between the devcontainer
+    // the test docker compose project, and the hostname reported by
+    // docker inspect in the tests in the PortConfig.
+    // the hostname is 0.0.0.0 and cannot be reached by the test code
+    // unless the devcontainer is on the host network. I've tried, among
+    // many othe permutations, putting the devcontainer on the same
+    // externally created network as the test containers but that did
+    // not work
     "runArgs": [
-      "--network=pytest-docker-compose-network"
+      "--network=host"
     ],
-    "initializeCommand": ".devcontainer/docker-init.sh",
     "workspaceFolder": "/workspace",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     "mounts": [
