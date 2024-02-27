@@ -12,7 +12,7 @@ Given a path to a `docker-compose.yml` file, it will automatically build the pro
 
 
 ## Dependencies
-------------
+
 Make sure you have [Docker](https://docs.docker.com/get-docker/) installed.
 
 This plugin is automatically tested against the following software:
@@ -24,7 +24,7 @@ This plugin is automatically tested against the following software:
 
 
 ## Installation
-------------
+
 Install the plugin using pip:
 
 ```shell
