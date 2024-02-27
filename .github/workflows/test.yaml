@@ -42,9 +42,6 @@ jobs:
         python -m pytest
     - name: Publish to test repository
       if: matrix.python-version == '3.11'
-      env:
-        PDM_PUBLISH_USERNAME: ${{ secrets.PDM_TEST_PUBLISH_USERNAME }}
-        PDM_PUBLISH_PASSWORD: ${{ secrets.PDM_TEST_PUBLISH_PASSWORD }}
       run: |
         source ${{ env.VIRTUAL_ENV }}/bin/activate
         pdm publish --repository testpypi
