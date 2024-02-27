@@ -37,11 +37,11 @@ jobs:
         python -m venv ${{ env.VIRTUAL_ENV }}
         pdm sync --verbose --dev
     - name: Run tests
-      if: matrix.python-version == '3.11'
       run: |
         source ${{ env.VIRTUAL_ENV }}/bin/activate
         python -m pytest
     - name: Publish to test repository
+      if: matrix.python-version == '3.11'
       env:
         PDM_PUBLISH_USERNAME: ${{ secrets.PDM_TEST_PUBLISH_USERNAME }}
         PDM_PUBLISH_PASSWORD: ${{ secrets.PDM_TEST_PUBLISH_PASSWORD }}
