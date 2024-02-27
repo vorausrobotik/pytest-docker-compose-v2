@@ -1,7 +1,5 @@
 pytest-docker-compose
 =====================
-.. image:: https://circleci.com/gh/pytest-docker-compose/pytest-docker-compose/tree/master.svg?style=svg
-    :target: https://circleci.com/gh/pytest-docker-compose/pytest-docker-compose/tree/master
 
 This package contains a `pytest`_ plugin for integrating Docker Compose into your automated integration tests.
 
