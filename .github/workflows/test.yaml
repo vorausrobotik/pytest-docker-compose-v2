@@ -31,6 +31,7 @@ jobs:
         cache: true
     - name: Install dependencies
       run: |
-        pdm install -v --dev
+        pythom -m venv ${{ env.VIRTUAL_ENV }}
+        pdm sync --verbose --dev
     - name: Run tests
       run: python -m pytest
