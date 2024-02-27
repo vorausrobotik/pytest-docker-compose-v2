@@ -1,7 +1,7 @@
 import os.path
-from pathlib import Path
 import warnings
 from datetime import datetime
+from pathlib import Path
 
 import pytest
 from python_on_whales import DockerClient
@@ -286,7 +286,7 @@ class ContainerGetter:
     def get(self, key: str) -> Container:
         containers = {
             container.config.labels["com.docker.compose.service"]: container
-            for container in self.docker_project.compose.ps()
+            for container in self.docker_project.compose.ps(all=True)
         }
         containers_running = {
             key: value for key, value in containers.items() if value.state.running
