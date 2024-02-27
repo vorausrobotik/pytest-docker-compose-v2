@@ -52,6 +52,9 @@ dev = [
     "bumpver>=2022.1120",
     "git-cliff>=2.0.4",
     "tox>=4.13.0",
+    "psycopg2-binary>=2.9.9",
+    "fastapi>=0.110.0",
+    "uvicorn>=0.27.1",
 ]
 
 [tool.pytest.ini_options]
