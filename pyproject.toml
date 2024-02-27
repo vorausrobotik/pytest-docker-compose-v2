@@ -1,5 +1,5 @@
 [project]
-name = "pytest-docker-compose"
+name = "pytest-docker-compose-v2"
 version = "0.1.0"
 description = "Manages Docker containers during your integration tests"
 authors = [
@@ -9,8 +9,6 @@ authors = [
 ]
 dependencies = [
     "pytest>=7.2.2,<8",
-    # starting with this version since that was in the original
-    # PR by Thomas Meckel: https://github.com/pytest-docker-compose/pytest-docker-compose/pull/98
     "python-on-whales>=0.69.0,<1"
 ]
 requires-python = ">=3.9"
