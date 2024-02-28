@@ -1,6 +1,6 @@
 [project]
 name = "pytest-docker-compose-v2"
-version = "0.1.0"
+version = "0.1.1"
 description = "Manages Docker containers during your integration tests"
 authors = [
     {name = "Radu Suciu"},
@@ -136,7 +136,7 @@ topo_order = false
 sort_commits = "oldest"
 
 [tool.bumpver]
-current_version = "0.1.0"
+current_version = "0.1.1"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true
