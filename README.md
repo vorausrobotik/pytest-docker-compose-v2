@@ -146,7 +146,7 @@ This mode is best used in combination with the `--docker-compose-no-build` flag 
 pytest --docker-compose-no-build --use-running-containers
 ```
 
-It is off course possible to add these options to `pytest.ini` or `pyproject.toml`.
+It is of course possible to add these options to `pytest.ini` or `pyproject.toml`.
 
 Notice that for this mode the scoping of the fixtures becomes less important since the containers are fully persistent throughout all tests. I only recommend using this if your network takes excessively long to spin up/tear down. It should really be a last resort and you should probably look into speeding up your network instead of using this.
 
