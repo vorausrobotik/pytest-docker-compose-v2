@@ -26,8 +26,8 @@ jobs:
       # needed because we use git describe to get a bumpver compatible GITHASH containing version
       # alternatively can look at using HEXHASH instead. Note that these are purposefully not
       # documented in the bumpver project, see issues/PRs for more info.
-      with:
-        fetch-depth: 0
+      # with:
+      #   fetch-depth: 0
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
@@ -45,14 +45,17 @@ jobs:
       run: |
         source ${{ env.VIRTUAL_ENV }}/bin/activate
         python -m pytest
-    - name: Publish to test repository
-      if: matrix.python-version == '3.11'
-      run: |
-        source ${{ env.VIRTUAL_ENV }}/bin/activate
+    # NOTE: publishing to test repository is disabled until I figure out a way to do it reliably
+    # this means that we need to avoid version clashes as well as local versions
+    # see: https://github.com/pypa/packaging.python.org/issues/804
+    # - name: Publish to test repository
+    #   if: matrix.python-version == '3.11'
+    #   run: |
+    #     source ${{ env.VIRTUAL_ENV }}/bin/activate
 
-        # adding the git hash to the current version so that the package
-        # won't be rejected from the test repository due to version clash
-        TEMP_VERSION=$(git describe | sed s/\-/\./ | sed s/\-/\+/)
-        bumpver update --no-commit --no-tag-commit --set-version="${TEMP_VERSION}"
+    #     # adding the git hash to the current version so that the package
+    #     # won't be rejected from the test repository due to version clash
+    #     TEMP_VERSION=$(git describe | sed s/\-/\./ | sed s/\-/\+/)
+    #     bumpver update --no-commit --no-tag-commit --set-version="${TEMP_VERSION}"
 
-        pdm publish --repository testpypi
+    #     pdm publish --repository testpypi
