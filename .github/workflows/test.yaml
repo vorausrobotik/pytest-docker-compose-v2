@@ -44,4 +44,10 @@ jobs:
       if: matrix.python-version == '3.11'
       run: |
         source ${{ env.VIRTUAL_ENV }}/bin/activate
+
+        # adding the git hash to the current version so that the package
+        # won't be rejected from the test repository due to version clash
+        TEMP_VERSION=$(git describe | sed s/\-/\./ | sed s/\-/\+/)
+        bumpver update --no-commit --no-tag-commit --set-version="${TEMP_VERSION}"
+
         pdm publish --repository testpypi

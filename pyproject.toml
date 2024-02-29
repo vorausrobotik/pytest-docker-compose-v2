@@ -1,6 +1,6 @@
 [project]
 name = "pytest-docker-compose-v2"
-version = "0.1.1"
+dynamic = ["version"]
 description = "Manages Docker containers during your integration tests"
 authors = [
     {name = "Radu Suciu"},
@@ -55,6 +55,10 @@ dev = [
     "uvicorn>=0.27.1",
     "pytest>=7.4.4",
 ]
+
+[tool.pdm.version]
+source = "file"
+path = "pytest_docker_compose/__init__.py"
 
 [tool.pytest.ini_options]
 addopts = "-m 'not (should_fail or multiple_compose_files)' '--docker-compose' './tests/pytest_docker_compose_tests/my_network' '--docker-compose-no-build'"
@@ -137,7 +141,7 @@ sort_commits = "oldest"
 
 [tool.bumpver]
 current_version = "0.1.1"
-version_pattern = "MAJOR.MINOR.PATCH"
+version_pattern = "MAJOR.MINOR.PATCH[GITHASH]"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true
 tag = true
@@ -146,5 +150,7 @@ push = false
 [tool.bumpver.file_patterns]
 "pyproject.toml" = [
     'current_version = "{version}"',
-    'version = "{version}"',
+]
+"pytest_docker_compose/__init__.py" = [
+  '__version__ = "{version}"',
 ]
