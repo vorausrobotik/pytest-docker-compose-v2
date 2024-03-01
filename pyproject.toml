@@ -4,8 +4,9 @@ dynamic = ["version"]
 description = "Manages Docker containers during your integration tests"
 authors = [
     {name = "Radu Suciu"},
-    {name = "Roald Storm"},
     {name = "Thomas Meckel"},
+    {name = "Roald Storm"},
+    {name = "Phoenix Zerin"},
 ]
 dependencies = [
     "pytest>=7.2.2",
@@ -54,6 +55,7 @@ dev = [
     "fastapi>=0.110.0",
     "uvicorn>=0.27.1",
     "pytest>=7.4.4",
+    "mypy>=1.8.0",
 ]
 
 [tool.pdm.version]
@@ -72,7 +74,7 @@ minversion = "7.2"
 line-length = 88
 target-version = "py311"
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 # Unlike Flake8, default to a complexity level of 10.
 max-complexity = 10
 
