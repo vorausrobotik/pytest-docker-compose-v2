@@ -5,8 +5,6 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-pytest_plugins = ["docker_compose"]
-
 
 @pytest.fixture(scope="function")
 def wait_for_api(function_scoped_container_getter):
@@ -23,7 +21,6 @@ def wait_for_api(function_scoped_container_getter):
     api_url = "http://%s:%s/" % (network_info.hostname, network_info.host_port)
     assert request_session.get(api_url)
     return request_session, api_url
-
 
 
 def test_read_and_write(wait_for_api):
