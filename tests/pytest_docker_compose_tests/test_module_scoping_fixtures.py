@@ -1,10 +1,10 @@
 import time
-import requests
 from urllib.parse import urljoin
-from urllib3.util.retry import Retry
-from requests.adapters import HTTPAdapter
 
 import pytest
+import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 
 @pytest.fixture(scope="module")

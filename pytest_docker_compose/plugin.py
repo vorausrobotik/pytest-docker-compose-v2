@@ -2,10 +2,14 @@ import os.path
 import warnings
 from datetime import datetime
 from pathlib import Path
+from typing import Literal, get_args
 
 import pytest
 from python_on_whales import DockerClient
 from python_on_whales.components.container.cli_wrapper import Container
+
+# Unfortunately, pytest doesn't expose the `Scope` enum
+_SCOPE_NAME = Literal["session", "package", "module", "class", "function"]
 
 
 class ContainersAlreadyExist(Exception):
@@ -64,6 +68,20 @@ def create_network_info_for_container(container: Container):
     ]
 
 
+def determine_scope(fixture_name: str, config: pytest.Config) -> _SCOPE_NAME:
+    """Returns the scope of the docker project fixture from the pytest arguments.
+
+    Args:
+        fixture_name: Fixture name (unused).
+        config: The pytest configuration object.
+
+    Returns:
+        The scope of the docker project fixture.
+    """
+    docker_project_scope: _SCOPE_NAME = config.getoption(name="--docker-project-scope")
+    return docker_project_scope
+
+
 class DockerComposePlugin:
     """
     Integrates docker-compose into pytest integration tests.
@@ -85,7 +103,7 @@ class DockerComposePlugin:
 
     # noinspection SpellCheckingInspection
     @staticmethod
-    def pytest_addoption(parser):
+    def pytest_addoption(parser: pytest.Parser) -> None:
         """
         Adds custom options to the ``pytest`` command.
 
@@ -122,20 +140,25 @@ class DockerComposePlugin:
             "instead of calling 'docker-compose up'",
         )
 
-    @pytest.fixture(scope="session")
-    def docker_project(self, request):
+        group.addoption(
+            "--docker-project-scope",
+            default="session",
+            help="Scope of the docker project fixture",
+            choices=get_args(_SCOPE_NAME),
+        )
+
+    @pytest.fixture(scope=determine_scope)
+    def compose_files(self, request: pytest.FixtureRequest) -> list[Path]:
         """
-        Builds the Docker project if necessary, once per session.
-
-        Returns the project instance, which can be used to start and stop
-        the Docker containers.
+        Returns the list of docker-compose files to use for the tests.
         """
+        items = os.environ.get(
+            "PDC2_COMPOSE_FILES", request.config.getoption("docker_compose")
+        )
 
-        compose_files = []
+        compose_files: list[Path] = []
 
-        for docker_compose in [
-            Path(f) for f in request.config.getoption("docker_compose").split(",")
-        ]:
+        for docker_compose in [Path(f) for f in items.split(",")]:
             if docker_compose.is_dir():
                 docker_compose /= "docker-compose.yml"
 
@@ -149,17 +172,22 @@ class DockerComposePlugin:
 
             compose_files.append(docker_compose)
 
+        return compose_files
+
+    @pytest.fixture(scope=determine_scope)
+    def docker_project(self, compose_files: list[Path], request: pytest.FixtureRequest):
+        """
+        Builds the Docker project if necessary, once per session.
+
+        Returns the project instance, which can be used to start and stop
+        the Docker containers.
+        """
         project_dir: str = None
         if len(compose_files) > 1:
             # py35 needs strings for os.path functions
             project_dir = str(
                 os.path.commonpath([str(f) for f in compose_files]) or "."
             )
-
-        # py35 needs strings for os.path functions
-        # Must be a list; will get accessed multiple times.
-        # https://github.com/pytest-docker-compose/pytest-docker-compose/pull/72
-        compose_files = [str(p) for p in compose_files]
 
         project = DockerClient(
             compose_project_directory=project_dir,
